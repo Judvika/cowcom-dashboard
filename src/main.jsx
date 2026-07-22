@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Building2, CheckCircle2, Clock3, Globe2, LockKeyhole, Rocket, Smartphone, TrendingUp } from 'lucide-react';
+import { Building2, CheckCircle2, Clock3, Globe2, LockKeyhole, Rocket, Smartphone, TrendingUp, Beaker } from 'lucide-react';
 import { approvals, company, goals, projects, tasks } from './data/company.js';
 import './styles.css';
 
@@ -26,6 +26,10 @@ function Progress({ value }) {
 
 function App() {
   const completedTasks = tasks.filter((task) => task.done).length;
+
+  const openPrototype = () => {
+    window.open('demos/ai-moment.html', '_blank');
+  };
 
   return (
     <main className="app-shell">
@@ -98,6 +102,34 @@ function App() {
             </article>
           ))}
         </div>
+      </section>
+
+      {/* NEW: AI Prototypes section */}
+      <section className="panel">
+        <div className="section-title">
+          <Beaker />
+          <div>
+            <p className="eyebrow">Prototypes</p>
+            <h2>실험 / 데모</h2>
+          </div>
+        </div>
+        <div className="project-list">
+          <article 
+            className="project-card" 
+            style={{ cursor: 'pointer' }}
+            onClick={openPrototype}
+          >
+            <div>
+              <span>AI</span>
+              <h3>오늘의 순간 v2</h3>
+            </div>
+            <p className="status">Interactive</p>
+            <p className="next">활동 종료 후 generative visual + adaptive sound. 새 탭에서 열림.</p>
+          </article>
+        </div>
+        <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '8px' }}>
+          (로컬에서 볼 때 demos/ai-moment.html 파일이 함께 있어야 합니다)
+        </p>
       </section>
 
       <section className="two-column">

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 순간 증강 v2</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&amp;family=Playfair+Display:wght@700&amp;display=swap');
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0c;
+      color: #e8e8e8;
+      font-family: 'Noto Sans KR', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 20px 16px 4px;
+      max-width: 420px;
+    }
+    
+    h1 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0 0 4px;
+      letter-spacing: -0.4px;
+    }
+    
+    .subtitle {
+      font-size: 12px;
+      color: #777;
+      margin: 0;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 420px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    
+    .controls {
+      background: #141418;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    
+    .input-group {
+      margin-bottom: 10px;
+    }
+    
+    label {
+      display: block;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+    
+    select, input {
+      width: 100%;
+      background: #0f0f12;
+      border: 1px solid #2a2a30;
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #e8e8e8;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .button {
+      width: 100%;
+      background: #2a2a32;
+      color: #ddd;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: all 0.2s;
+    }
+    
+    .button:hover {
+      background: #3a3a42;
+    }
+    
+    .button.primary {
+      background: #4a5a9e;
+      color: white;
+    }
+    
+    .button.primary:hover {
+      background: #5c6fb8;
+    }
+    
+    .result {
+      background: #141418;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    
+    .result.show {
+      display: block;
+    }
+    
+    #canvas-container {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+      background: #0a0a0c;
+    }
+    
+    .artifact-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: #d0d0d0;
+      margin: 0 0 10px;
+      padding: 10px 4px;
+      border-top: 1px solid #2a2a30;
+      border-bottom: 1px solid #2a2a30;
+      font-style: italic;
+    }
+    
+    .meta {
+      font-size: 11px;
+      color: #666;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+    
+    .play-button {
+      background: #1f1f24;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .play-button:hover {
+      background: #29292f;
+    }
+    
+    .hint {
+      font-size: 10.5px;
+      color: #555;
+      text-align: center;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    
+    .footer {
+      font-size: 10px;
+      color: #444;
+      text-align: center;
+      margin: 24px 0 30px;
+    }
+    
+    .note {
+      font-size: 10px;
+      color: #555;
+      background: #111;
+      padding: 8px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>오늘의 순간 v2</h1>
+    <p class="subtitle">조금 더 분위기 있게 만들어 봤어</p>
+  </div>
+
+  <div class="container">
+    <div class="controls">
+      <div class="input-group">
+        <label>활동</label>
+        <select id="activity">
+          <option value="catchball">캐치볼</option>
+          <option value="walk">산책</option>
+          <option value="study">공부 / 앉아서</option>
+          <option value="run">가볍게 달리기</option>
+          <option value="sit">그냥 앉아있기</option>
+        </select>
+      </div>
+      
+      <div class="input-group">
+        <label>지속 시간 (분)</label>
+        <input type="number" id="duration" value="42" min="10" max="180">
+      </div>
+      
+      <div class="input-group">
+        <label>시간대</label>
+        <select id="time">
+          <option value="afternoon">오후</option>
+          <option value="evening">저녁</option>
+          <option value="morning">아침</option>
+          <option value="night">밤</option>
+        </select>
+      </div>
+      
+      <button class="button primary" onclick="generateMoment()">이 순간 만들기</button>
+    </div>
+
+    <div id="result" class="result">
+      <div id="canvas-container"></div>
+      
+      <div class="artifact-text" id="artifact-text"></div>
+      
+      <div class="meta">
+        <span id="meta-info"></span>
+        <button class="play-button" onclick="playSound()" id="sound-btn">▶ 분위기 소리</button>
+      </div>
+      
+      <div class="note">
+        v2: 색감 + 레이어 + 부드러운 움직임 + 더 자연스러운 사운드
+      </div>
+    </div>
+    
+    <button class="button" onclick="resetAll()">다시 해보기</button>
+    
+    <div class="hint">
+      파일로 받은 거 바로 열어봐. 브라우저에서.
+    </div>
+  </div>
+
+  <div class="footer">
+    프로토타입 v2
+  </div>
+
+  <script>
+    let currentSketch = null;
+    let audioContext = null;
+
+    function generateMoment() {
+      const activity = document.getElementById('activity').value;
+      const duration = parseInt(document.getElementById('duration').value) || 42;
+      const time = document.getElementById('time').value;
+
+      const result = document.getElementById('result');
+      result.classList.add('show');
+
+      const container = document.getElementById('canvas-container');
+      container.innerHTML = '';
+
+      currentSketch = new p5((p) => {
+        let particles = [];
+        let trails = [];
+        let seed = Date.now();
+        let palette;
+        
+        p.setup = function() {
+          const canvas = p.createCanvas(380, 235);
+          canvas.parent(container);
+          p.randomSeed(seed);
+          p.noiseSeed(seed);
+          
+          if (activity === 'catchball') {
+            palette = time === 'evening' ? ['#f2c38f', '#d98a5e', '#7a5e4f'] : ['#f8d9a0', '#c98f5e', '#5a6b5a'];
+          } else if (activity === 'walk') {
+            palette = time === 'night' ? ['#a8b8c8', '#6e7a8a', '#3a4555'] : ['#b8c8b0', '#7a8a72', '#4a5a48'];
+          } else if (activity === 'study') {
+            palette = ['#c8c8d8', '#8a8a9a', '#4a4a5a'];
+          } else if (activity === 'run') {
+            palette = ['#e88a6a', '#b85a4a', '#5a3a2a'];
+          } else {
+            palette = time === 'night' ? ['#a0a8b8', '#606878', '#303848'] : ['#b0c0b8', '#708078', '#404848'];
+          }
+          
+          particles = [];
+          trails = [];
+          const count = activity === 'study' ? 18 : Math.floor(duration / 2) + 12;
+          
+          for (let i = 0; i < count; i++) {
+            particles.push({
+              x: p.random(p.width),
+              y: p.random(p.height * 0.9),
+              size: p.random(1.8, 4.5),
+              vx: p.random(-0.4, 0.4),
+              vy: p.random(-0.3, 0.3),
+              phase: p.random(p.TWO_PI),
+              life: p.random(0.6, 1)
+            });
+          }
+        };
+        
+        p.draw = function() {
+          let bg = (time === 'night' || time === 'evening') ? 12 : 18;
+          p.background(bg, bg + 2, bg + 5);
+          
+          p.noStroke();
+          for (let i = 0; i < 4; i++) {
+            p.fill(255, 255, 255, 2);
+            p.ellipse(p.width * 0.5, p.height * 0.35, 320 + i * 40, 140);
+          }
+          
+          const t = p.frameCount * 0.018;
+          
+          p.strokeWeight(1.2);
+          for (let i = trails.length - 1; i >= 0; i--) {
+            const tr = trails[i];
+            p.stroke(tr.color[0], tr.color[1], tr.color[2], tr.alpha);
+            p.line(tr.x, tr.y, tr.px, tr.py);
+            tr.alpha -= 4.5;
+            if (tr.alpha <= 0) trails.splice(i, 1);
+          }
+          
+          p.noStroke();
+          
+          for (let i = 0; i < particles.length; i++) {
+            const pt = particles[i];
+            const tt = t + pt.phase;
+            
+            let x = pt.x;
+            let y = pt.y;
+            
+            if (activity === 'catchball') {
+              x = p.width/2 + Math.sin(tt * 2.1) * (55 + Math.sin(i) * 18);
+              y = p.height/2 + Math.cos(tt * 1.6 + i) * 32;
+              pt.vx = (x - pt.x) * 0.08;
+              pt.vy = (y - pt.y) * 0.08;
+            } 
+            else if (activity === 'walk') {
+              x = pt.x + Math.sin(tt * 0.7) * 1.8;
+              y = pt.y + Math.sin(tt * 0.45 + i) * 2.2;
+            } 
+            else if (activity === 'study') {
+              x = pt.x + Math.sin(tt * 0.35) * 1.2;
+              y = pt.y + Math.cos(tt * 0.28) * 0.9;
+            } 
+            else if (activity === 'run') {
+              x = (pt.x + t * 2.8 + i * 0.4) % (p.width + 60) - 20;
+              y = pt.y + Math.sin(tt * 3.5) * 8;
+            } 
+            else {
+              const cx = p.width * 0.5 + Math.sin(i) * 18;
+              x = cx + Math.cos(tt * 0.6 + i) * 28;
+              y = p.height * 0.52 + Math.sin(tt * 0.4) * 22;
+            }
+            
+            pt.x = x;
+            pt.y = y;
+            
+            const col = palette[i % palette.length];
+            const r = parseInt(col.slice(1,3), 16);
+            const g = parseInt(col.slice(3,5), 16);
+            const b = parseInt(col.slice(5,7), 16);
+            
+            const alpha = 140 + Math.sin(tt * 2) * 40;
+            p.fill(r, g, b, alpha);
+            
+            const s = pt.size * (0.8 + Math.sin(tt) * 0.3);
+            p.ellipse(x, y, s, s);
+            
+            if (Math.random() < 0.35 && activity !== 'study') {
+              trails.push({
+                x: x,
+                y: y,
+                px: x - pt.vx * 3,
+                py: y - pt.vy * 3,
+                color: [r, g, b],
+                alpha: 35
+              });
+            }
+          }
+          
+          p.fill(255, 255, 255, 3);
+          for (let i = 0; i < 12; i++) {
+            p.ellipse(p.random(p.width), p.height - 8, 1.5, 1);
+          }
+        };
+      }, container);
+
+      const text = generateText(activity, duration, time);
+      document.getElementById('artifact-text').innerHTML = text;
+      
+      document.getElementById('meta-info').textContent = 
+        `${getActivityName(activity)} · ${duration}분 · ${getTimeName(time)}`;
+      
+      window.currentSoundParams = { activity, duration: Math.min(duration, 120), time };
+    }
+    
+    function generateText(activity, duration, time) {
+      const templates = {
+        catchball: [
+          `공이 공기와 부딪히며 잠시 머물렀던 ${duration}분.`,
+          `손끝에서 공이 떠나고 다시 돌아오는 그 사이.`,
+          `운동장 한 켠, 바람과 공이 함께 움직이던 시간.`
+        ],
+        walk: [
+          `발이 땅을 밟을 때마다 조금씩 생각이 흩어지던 길.`,
+          `천천히, 아무 목적 없이 걸었던 ${duration}분.`,
+          `바람이 옷깃을 스치며 지나가던 그 길.`
+        ],
+        study: [
+          `페이지가 조용히 넘어가는 동안 시간도 함께 쉬었던 자리.`,
+          `생각이 한 곳에 가만히 머물렀던 ${duration}분.`,
+          `책과 나 사이에 작고 따뜻한 정적이 있었다.`
+        ],
+        run: [
+          `숨과 발이 리듬을 맞추며 지나간 순간들.`,
+          `땀이 식기 전에 바람이 먼저 식혀주던 시간.`,
+          `땅을 밀어내며 달려온 그 가벼운 무게.`
+        ],
+        sit: [
+          `아무것도 하지 않기로 한 ${duration}분.`,
+          `하늘을 올려다보다가 그냥 그렇게 있었던 자리.`,
+          `가만히 앉아있던 공기가 조금 달라 보이던 순간.`
+        ]
+      };
+      
+      const arr = templates[activity] || templates['sit'];
+      let base = arr[Math.floor(Math.random() * arr.length)];
+      
+      if (time === 'evening') base = base + ' 저녁빛이 스며들면서.';
+      if (time === 'night') base = base + ' 어둠이 조용히 내려않았다.';
+      
+      return base;
+    }
+    
+    function getActivityName(act) {
+      const names = { catchball:'캐치볼', walk:'산책', study:'공부', run:'달리기', sit:'앉아있기' };
+      return names[act] || act;
+    }
+    
+    function getTimeName(t) {
+      const names = { morning:'아침', afternoon:'오후', evening:'저녁', night:'밤' };
+      return names[t] || t;
+    }
+    
+    function playSound() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      
+      const params = window.currentSoundParams || { activity: 'walk', duration: 42, time: 'afternoon' };
+      
+      const master = audioContext.createGain();
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 1450;
+      
+      master.gain.value = 0.55;
+      master.connect(audioContext.destination);
+      filter.connect(master);
+      
+      const now = audioContext.currentTime;
+      const dur = Math.min(params.duration / 2.8, 14);
+      
+      if (params.activity === 'catchball') {
+        for (let k = 0; k < 3; k++) {
+          const t0 = now + k * 1.6;
+          const osc = audioContext.createOscillator();
+          const g = audioContext.createGain();
+          const f = audioContext.createBiquadFilter();
+          osc.type = 'sine';
+          osc.frequency.value = 95 + k * 8;
+          f.type = 'lowpass';
+          f.frequency.value = 420;
+          g.gain.value = 0.18;
+          g.gain.linearRampToValueAtTime(0.001, t0 + 1.1);
+          osc.connect(f);
+          f.connect(g);
+          g.connect(filter);
+          osc.start(t0);
+          osc.stop(t0 + 1.4);
+        }
+        addNoiseLayer(now, dur + 1.5, 0.22, 820, 'lowpass');
+      } 
+      else if (params.activity === 'walk') {
+        addNoiseLayer(now, dur + 2, 0.38, 950, 'lowpass');
+        const pad = audioContext.createOscillator();
+        const pg = audioContext.createGain();
+        pad.type = 'sine';
+        pad.frequency.value = 58;
+        pg.gain.value = 0.09;
+        pg.gain.linearRampToValueAtTime(0.001, now + dur + 1.5);
+        pad.connect(pg);
+        pg.connect(filter);
+        pad.start(now);
+        pad.stop(now + dur + 2);
+      } 
+      else if (params.activity === 'study') {
+        const low = audioContext.createOscillator();
+        const lg = audioContext.createGain();
+        low.type = 'sine';
+        low.frequency.value = 46;
+        lg.gain.value = 0.07;
+        lg.gain.linearRampToValueAtTime(0.001, now + dur + 3);
+        low.connect(lg);
+        lg.connect(filter);
+        low.start(now);
+        low.stop(now + dur + 3.5);
+        
+        addNoiseLayer(now, dur + 2.5, 0.12, 620, 'lowpass');
+      } 
+      else if (params.activity === 'run') {
+        for (let k = 0; k < 5; k++) {
+          const t0 = now + k * 0.85;
+          const osc = audioContext.createOscillator();
+          const g = audioContext.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.value = 78;
+          g.gain.value = 0.13;
+          g.gain.linearRampToValueAtTime(0.001, t0 + 0.35);
+          osc.connect(g);
+          g.connect(filter);
+          osc.start(t0);
+          osc.stop(t0 + 0.5);
+        }
+        addNoiseLayer(now, dur, 0.18, 1100, 'lowpass');
+      } 
+      else {
+        const pad1 = audioContext.createOscillator();
+        const pad2 = audioContext.createOscillator();
+        const pg = audioContext.createGain();
+        pad1.type = 'sine'; pad2.type = 'sine';
+        pad1.frequency.value = 52; pad2.frequency.value = 67;
+        pg.gain.value = 0.08;
+        pg.gain.linearRampToValueAtTime(0.001, now + dur + 4);
+        pad1.connect(pg); pad2.connect(pg);
+        pg.connect(filter);
+        pad1.start(now); pad2.start(now);
+        pad1.stop(now + dur + 4.5); pad2.stop(now + dur + 4.5);
+        addNoiseLayer(now, dur + 3, 0.15, 580, 'lowpass');
+      }
+      
+      const btn = document.getElementById('sound-btn');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '♪ 재생 중';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.disabled = false;
+      }, (dur + 1.2) * 1000);
+    }
+    
+    function addNoiseLayer(startTime, length, volume, cutoff, filterType) {
+      const noise = audioContext.createBufferSource();
+      const buffer = audioContext.createBuffer(1, audioContext.sampleRate * (length + 1), audioContext.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+      noise.buffer = buffer;
+      
+      const nf = audioContext.createBiquadFilter();
+      nf.type = filterType || 'lowpass';
+      nf.frequency.value = cutoff;
+      
+      const ng = audioContext.createGain();
+      ng.gain.value = volume;
+      ng.gain.linearRampToValueAtTime(0.001, startTime + length);
+      
+      noise.connect(nf);
+      nf.connect(ng);
+      ng.connect(audioContext.destination);
+      
+      noise.start(startTime);
+      noise.stop(startTime + length + 0.5);
+    }
+    
+    function resetAll() {
+      const result = document.getElementById('result');
+      result.classList.remove('show');
+      const container = document.getElementById('canvas-container');
+      container.innerHTML = '';
+      if (currentSketch) {
+        currentSketch.remove();
+        currentSketch = null;
+      }
+    }
+  </script>
+</body>
+</html>
