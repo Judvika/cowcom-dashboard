@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개발계획서 • Personal Decisions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap');
+        
+        body {
+            font-family: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
+        }
+        
+        .section-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e4e4e7;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 8px;
+        }
+        
+        .phase-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .phase-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        
+        .nav-link {
+            transition: all 0.1s;
+        }
+        
+        .nav-link:hover {
+            color: #fff;
+            transform: translateX(2px);
+        }
+        
+        .metric-box {
+            background: #18181b;
+            border: 1px solid #3f3f46;
+        }
+        
+        .roadmap-line {
+            height: 2px;
+            background: linear-gradient(to right, #3f3f46, #52525b);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <!-- Top Navigation -->
+    <nav class="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-white rounded-2xl flex items-center justify-center">
+                    <i class="fa-solid fa-brain text-zinc-950 text-xl"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-xl">Personal Decisions</div>
+                    <div class="text-[10px] text-zinc-500 -mt-1">개인 룰 기반 결정 도우미</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-sm">
+                <a href="PROTOTYPE_STARTER.html" target="_blank" 
+                   class="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-3xl text-sm font-medium transition">
+                    <i class="fa-solid fa-play mr-1"></i>
+                    <span>프로토타입 바로가기</span>
+                </a>
+                <a href="#roadmap" class="nav-link text-zinc-400 hover:text-white px-3 py-1.5">로드맵</a>
+                <a href="#tech" class="nav-link text-zinc-400 hover:text-white px-3 py-1.5">기술 스택</a>
+                <a href="#risk" class="nav-link text-zinc-400 hover:text-white px-3 py-1.5">위험</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-6 py-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 rounded-3xl text-xs font-medium mb-3">
+                    <i class="fa-solid fa-flag text-emerald-400"></i>
+                    <span>2026년 1인 개발 프로젝트</span>
+                </div>
+                <h1 class="text-4xl font-bold tracking-tight">개발계획서</h1>
+                <p class="text-xl text-zinc-400 mt-2">개인 구매 가드 + 룰 기반 Declutter</p>
+            </div>
+            <div class="text-right text-sm">
+                <div class="text-zinc-500">작성일</div>
+                <div class="font-medium">2026년 7월 22일</div>
+                <div class="text-emerald-400 text-xs mt-1">v1.0 • 2개 아이디어 병렬 진행</div>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <div class="grid md:grid-cols-3 gap-6 mb-10">
+            <div class="md:col-span-2 bg-zinc-900 rounded-3xl p-8">
+                <div class="section-header mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <span>프로젝트 비전</span>
+                </div>
+                <div class="prose prose-invert text-zinc-300 max-w-none">
+                    <p class="text-lg leading-relaxed">
+                        사용자가 <strong class="text-white">직접 만든 개인 룰</strong>과 누적된 자신의 행동 데이터를 기반으로 
+                        중요한 결정을 도와주는 도구.
+                    </p>
+                    <p>
+                        단순한 인벤토리 앱이 아니라, <strong>구매 후회 방지</strong>와 <strong>물건 정리 의사결정</strong>에 특화된 
+                        개인용 의사결정 보조 시스템.
+                    </p>
+                    <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>개인만 사용 (커뮤니티 없음)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>실제 돈 가치 명확</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>1인 개발 유지 가능</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-emerald-400"></i>
+                            <span>즉각적 결과물</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 rounded-3xl p-8 flex flex-col">
+                <div class="section-header mb-5">선택된 2개 트랙</div>
+                
+                <div class="space-y-4 flex-1">
+                    <div class="flex gap-3">
+                        <div class="w-6 h-6 bg-blue-500 rounded-2xl flex-shrink-0 flex items-center justify-center text-xs font-bold mt-0.5">1</div>
+                        <div>
+                            <div class="font-semibold">개인 구매 가드</div>
+                            <div class="text-xs text-zinc-400">Pre-Purchase Personal Checker</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-6 h-6 bg-amber-500 rounded-2xl flex-shrink-0 flex items-center justify-center text-xs font-bold mt-0.5">3</div>
+                        <div>
+                            <div class="font-semibold">개인 룰 기반 Declutter</div>
+                            <div class="text-xs text-zinc-400">Rule-based Decision Helper</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pt-4 border-t border-zinc-800 text-xs text-zinc-400">
+                    공통 기반: <strong class="text-zinc-300">개인 룰 엔진 + 아이템 인벤토리</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- 목표 및 성공 기준 -->
+        <div class="mb-10">
+            <div class="section-header mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-tachometer-alt"></i>
+                <span>프로젝트 목표 &amp; 성공 기준</span>
+            </div>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="metric-box rounded-3xl p-6">
+                    <div class="text-xs text-zinc-500 mb-1">1인 개발 난이도</div>
+                    <div class="text-3xl font-bold">중하</div>
+                    <div class="text-emerald-400 text-xs mt-1">공유 룰 엔진으로 중복 개발 최소화</div>
+                </div>
+                <div class="metric-box rounded-3xl p-6">
+                    <div class="text-xs text-zinc-500 mb-1">MVP 목표 기간</div>
+                    <div class="text-3xl font-bold">6~8주</div>
+                    <div class="text-xs mt-1">두 트랙 모두 최소 동작 가능 상태</div>
+                </div>
+                <div class="metric-box rounded-3xl p-6">
+                    <div class="text-xs text-zinc-500 mb-1">주요 성공 지표</div>
+                    <div class="space-y-1 text-sm mt-2">
+                        <div class="flex items-center gap-2"><span class="text-emerald-400">•</span> 한 달 이상 반복 사용</div>
+                        <div class="flex items-center gap-2"><span class="text-emerald-400">•</span> 사용자 직접 만든 룰 5개 이상</div>
+                        <div class="flex items-center gap-2"><span class="text-emerald-400">•</span> 실제 구매 포기/판매 행동 발생</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 로드맵 -->
+        <div id="roadmap" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="section-header flex-1">개발 로드맵 (Phase별)</div>
+                <div class="text-xs px-3 py-1 bg-zinc-900 rounded-3xl">총 4 Phase</div>
+            </div>
+
+            <!-- Phase 0 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-emerald-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-emerald-400">Phase 0</span>
+                        <span class="text-sm bg-emerald-900 text-emerald-400 px-3 py-0.5 rounded-2xl text-xs">완료</span>
+                    </div>
+                    <span class="text-xs text-zinc-500">현재</span>
+                </div>
+                <div class="font-semibold mb-1">기획 및 초기 프로토타입</div>
+                <div class="text-sm text-zinc-400">개발계획서 작성 • 데이터 모델 정의 • Rule Engine 설계 • 인터랙티브 HTML 프로토타입 제작</div>
+                <div class="mt-2 text-xs text-emerald-400">→ 이 문서 + PROTOTYPE_STARTER.html 완성</div>
+            </div>
+
+            <!-- Phase 1 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-blue-400">Phase 1</span>
+                        <span class="text-xs bg-blue-900 text-blue-400 px-3 py-0.5 rounded-2xl">2~3주</span>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-x-8">
+                    <div>
+                        <div class="font-semibold mb-2">공통 기반 구축</div>
+                        <ul class="text-sm space-y-1 text-zinc-300">
+                            <li>• 실제 Rule Engine 구현 (Python or JS)</li>
+                            <li>• 아이템 CRUD + 기본 룰 매칭</li>
+                            <li>• DecisionLog 저장 구조</li>
+                            <li>• 간단 로컬 데이터베이스 (SQLite / JSON)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-2">공통 UI 베이스</div>
+                        <ul class="text-sm space-y-1 text-zinc-300">
+                            <li>• 룰 관리 화면</li>
+                            <li>• 아이템 등록/리스트</li>
+                            <li>• 기본 대시보드</li>
+                            <li>• 로컬 저장 + 내보내기 기능</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-indigo-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-indigo-400">Phase 2</span>
+                        <span class="text-xs bg-indigo-900 text-indigo-400 px-3 py-0.5 rounded-2xl">2주</span>
+                    </div>
+                </div>
+                <div class="font-semibold mb-2">Idea 1 - 구매 가드 MVP</div>
+                <div class="text-sm text-zinc-400 grid md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="font-medium text-zinc-300 mb-1">핵심 기능</div>
+                        <ul class="space-y-1">
+                            <li>• 구매 후보 입력 (텍스트 + 링크)</li>
+                            <li>• 즉시 판단 결과 + 이유 표시</li>
+                            <li>• 비슷한 아이템 매칭</li>
+                            <li>• 구매/스킵 결정 기록</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-medium text-zinc-300 mb-1">차별화 요소</div>
+                        <ul class="space-y-1">
+                            <li>• 사용자가 만든 룰 직접 반영</li>
+                            <li>• 개인 사용 패턴 요약</li>
+                            <li>• "이번 달 아낀 금액" 추정</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-amber-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-amber-400">Phase 3</span>
+                        <span class="text-xs bg-amber-900 text-amber-400 px-3 py-0.5 rounded-2xl">2주</span>
+                    </div>
+                </div>
+                <div class="font-semibold mb-2">Idea 3 - 룰 기반 Declutter MVP</div>
+                <div class="text-sm text-zinc-400 grid md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="font-medium text-zinc-300 mb-1">핵심 기능</div>
+                        <ul class="space-y-1">
+                            <li>• 자동 소팅된 리스트 (판매추천 / 저사용)</li>
+                            <li>• 아이템별 적용된 룰 설명</li>
+                            <li>• 판매용 상품 소개 초안 생성</li>
+                            <li>• 사용자 피드백 루프</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-medium text-zinc-300 mb-1">차별화 요소</div>
+                        <ul class="space-y-1">
+                            <li>• 사용자가 직접 만든 기준으로 분류</li>
+                            <li>• 과거 판매 성공 스타일 반영</li>
+                            <li>• 구매 가드와 데이터 연동</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 border-l-4 border-violet-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-violet-400">Phase 4</span>
+                        <span class="text-xs bg-violet-900 text-violet-400 px-3 py-0.5 rounded-2xl">2~3주</span>
+                    </div>
+                </div>
+                <div class="font-semibold mb-2">통합 + 수익화 준비</div>
+                <div class="text-sm text-zinc-400">
+                    두 기능 통합 대시보드 • 구독 모델 적용 • 온보딩 개선 • 실제 사용자 테스트 • 보험/자산 연동 준비
+                </div>
+            </div>
+        </div>
+
+        <!-- 기술 스택 -->
+        <div id="tech" class="mb-12">
+            <div class="section-header mb-4">기술 스택 추천</div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 초기 단계 -->
+                <div class="bg-zinc-900 rounded-3xl p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xs bg-zinc-800 px-3 py-1 rounded-2xl">Phase 0 ~ 1</span>
+                        <span class="font-semibold">초기 빠른 검증</span>
+                    </div>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <div class="font-medium text-emerald-400">프론트</div>
+                            <div class="text-zinc-400">HTML + Tailwind + Vanilla JS (현재 프로토타입 기반)</div>
+                        </div>
+                        <div>
+                            <div class="font-medium text-emerald-400">데이터 저장</div>
+                            <div class="text-zinc-400">localStorage → SQLite (Python) 또는 JSON 파일</div>
+                        </div>
+                        <div>
+                            <div class="font-medium text-emerald-400">Rule Engine</div>
+                            <div class="text-zinc-400">Python (Pydantic + 간단 evaluator) 또는 JavaScript</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 본격 개발 -->
+                <div class="bg-zinc-900 rounded-3xl p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xs bg-zinc-800 px-3 py-1 rounded-2xl">Phase 2 이후</span>
+                        <span class="font-semibold">본격 개발</span>
+                    </div>
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <div class="font-medium text-blue-400">추천 스택 1 (웹 + 로컬)</div>
+                            <div class="text-zinc-400">Next.js 15 (App Router) + Tailwind + SQLite + Vercel</div>
+                        </div>
+                        <div>
+                            <div class="font-medium text-blue-400">추천 스택 2 (로컬 앱)</div>
+                            <div class="text-zinc-400">Tauri + Rust 백엔드 + React 프론트 (프라이버시 최고)</div>
+                        </div>
+                        <div class="text-xs text-zinc-500 pt-2">
+                            초기는 로컬 중심으로 시작. 클라우드 동기화는 나중에 선택.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 수익화 전략 -->
+        <div class="mb-12">
+            <div class="section-header mb-4">수익화 전략 (공통)</div>
+            <div class="bg-zinc-900 rounded-3xl p-7">
+                <div class="grid md:grid-cols-2 gap-8 text-sm">
+                    <div>
+                        <div class="font-semibold mb-3">가격 모델</div>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between"><span>무료</span> <span class="text-zinc-400">월 15회 판단 + 50개 아이템</span></li>
+                            <li class="flex justify-between"><span class="font-medium">유료 (월 4,900원)</span> <span class="text-emerald-400">무제한 + 고급 룰</span></li>
+                            <li class="flex justify-between"><span>연간</span> <span class="text-zinc-400">연 49,000원 (2개월 무료)</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-3">설득 포인트</div>
+                        <div class="space-y-2 text-zinc-300">
+                            <div>• "이 앱 때문에 구매 포기한 금액" 자동 표시</div>
+                            <div>• "정리 후 실제 판매 수익" 추정 리포트</div>
+                            <div>• 큰 구매나 정리 전에만 사용해도 가치 있음</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 위험 및 대처 -->
+        <div id="risk" class="mb-12">
+            <div class="section-header mb-4">주요 위험 및 대처 방안</div>
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                <div class="bg-zinc-900 p-6 rounded-3xl">
+                    <div class="font-semibold text-red-400 mb-2">위험: 초기 입력 부담</div>
+                    <div class="text-zinc-400">사용자가 모든 물건을 등록해야 가치가 생김</div>
+                    <div class="mt-2 text-emerald-400 text-xs">→ 해결: 카테고리별 최소 등록 유도 + 영수증/구매내역 자동 파싱 (Phase 3~4)</div>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-3xl">
+                    <div class="font-semibold text-red-400 mb-2">위험: 판단 정확도</div>
+                    <div class="text-zinc-400">AI 판단이 틀리면 신뢰를 잃음</div>
+                    <div class="mt-2 text-emerald-400 text-xs">→ 해결: 항상 "사용자가 최종 결정"임을 강조 + 피드백 루프 강하게 설계</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 즉시 다음 액션 -->
+        <div class="bg-zinc-900 rounded-3xl p-7">
+            <div class="font-semibold mb-4 text-lg">다음 즉시 실행 액션 (1주 내 목표)</div>
+            <div class="grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                <div class="flex gap-3">
+                    <div class="text-emerald-400 font-mono text-xs w-5">01</div>
+                    <div>Rule Engine 최소 구현 (Python)</div>
+                </div>
+                <div class="flex gap-3">
+                    <div class="text-emerald-400 font-mono text-xs w-5">02</div>
+                    <div>아이템 + 룰 CRUD API 또는 함수 작성</div>
+                </div>
+                <div class="flex gap-3">
+                    <div class="text-emerald-400 font-mono text-xs w-5">03</div>
+                    <div>구매 가드 핵심 로직을 프로토타입에 연결</div>
+                </div>
+                <div class="flex gap-3">
+                    <div class="text-emerald-400 font-mono text-xs w-5">04</div>
+                    <div>사용자 테스트용 최소 시나리오 3개 정의</div>
+                </div>
+            </div>
+            
+            <div class="mt-6 pt-5 border-t border-zinc-800 text-xs text-zinc-400">
+                이 개발계획서는 <strong>PROTOTYPE_STARTER.html</strong>와 함께 프로젝트의 기준 문서입니다.<br>
+                진행하면서 계속 업데이트 예정.
+            </div>
+        </div>
+
+        <div class="text-center mt-12 text-xs text-zinc-500">
+            Personal Decisions • 1인 개발 프로젝트 • 2026
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script (이미 CDN으로 로드됨)
+        function init() {
+            // 부드러운 스크롤
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        }
+        
+        window.onload = init;
+    </script>
+</body>
+</html>
