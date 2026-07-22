@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개발계획서 • Food Rule Guard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap');
+        
+        body {
+            font-family: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
+        }
+        
+        .section-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e4e4e7;
+            border-bottom: 1px solid #3f3f46;
+            padding-bottom: 8px;
+        }
+        
+        .phase-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .metric-box {
+            background: #18181b;
+            border: 1px solid #3f3f46;
+        }
+        
+        .value-card {
+            background: #18181b;
+            border: 1px solid #3f3f46;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <!-- Top Navigation -->
+    <nav class="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-orange-500 rounded-2xl flex items-center justify-center">
+                    <i class="fa-solid fa-utensils text-white text-xl"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-xl">Food Rule Guard</div>
+                    <div class="text-[10px] text-zinc-500 -mt-1">내 식사 룰 + 임팩트 엔진</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-sm">
+                <a href="/prototypes.html" class="px-4 py-1.5 rounded-full hover:bg-white/5 transition text-zinc-300 hover:text-white">프로토타입으로 돌아가기</a>
+                <a href="#roadmap" class="nav-link text-zinc-400 hover:text-white px-3 py-1.5">로드맵</a>
+                <a href="#monetization" class="nav-link text-zinc-400 hover:text-white px-3 py-1.5">수익화</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-6 py-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 rounded-3xl text-xs font-medium mb-3">
+                    <i class="fa-solid fa-flag text-orange-400"></i>
+                    <span>수익화 중심 1인 프로젝트</span>
+                </div>
+                <h1 class="text-4xl font-bold tracking-tight">개발계획서</h1>
+                <p class="text-xl text-zinc-400 mt-2">Food Rule Guard • 내 식사 룰 + 데이터 기반 임팩트</p>
+            </div>
+            <div class="text-right text-sm">
+                <div class="text-zinc-500">작성일</div>
+                <div class="font-medium">2026년 7월 22일</div>
+                <div class="text-orange-400 text-xs mt-1">v1.0 • 템플릿 + 데이터 + 계산 중심</div>
+            </div>
+        </div>
+
+        <!-- Vision -->
+        <div class="grid md:grid-cols-3 gap-6 mb-10">
+            <div class="md:col-span-2 bg-zinc-900 rounded-3xl p-8">
+                <div class="section-header mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <span>프로젝트 비전</span>
+                </div>
+                <div class="prose prose-invert text-zinc-300 max-w-none">
+                    <p class="text-lg leading-relaxed">
+                        사용자가 <strong class="text-white">직접 만들거나 템플릿에서 선택한 개인 식사 룰</strong>에 
+                        실제 음식 데이터(칼로리, 가격)를 결합해 <strong>즉시 판단 + 미래 효과</strong>를 보여주는 도구.
+                    </p>
+                    <p>
+                        그냥 AI한테 매번 물어보는 게 아니라, <strong>내 규칙 + 내 데이터 + 계산된 임팩트</strong>를 한 번에 제공한다.
+                    </p>
+                    
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-3">
+                            <div class="text-orange-400 text-xs mb-1">기존 문제</div>
+                            <div class="text-zinc-300">매번 규칙 설명 + 칼로리 계산 + 비용 추정 별도</div>
+                        </div>
+                        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-3">
+                            <div class="text-emerald-400 text-xs mb-1">제공하는 가치</div>
+                            <div class="text-zinc-300">한 번 입력 → 규칙 매칭 + 칼로리/비용 + 다이어트 효과 한 번에</div>
+                        </div>
+                        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-3">
+                            <div class="text-sky-400 text-xs mb-1">차별화 포인트</div>
+                            <div class="text-zinc-300">지속적인 개인 룰 + 누적 데이터 기반 예측</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 rounded-3xl p-8">
+                <div class="section-header mb-5">핵심 원칙</div>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                        <div><strong>템플릿 우선</strong><br><span class="text-zinc-400 text-xs">사용자가 처음부터 모든 룰을 만들지 않게</span></div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                        <div><strong>데이터 결합</strong><br><span class="text-zinc-400 text-xs">칼로리 + 금액 + 효과를 즉시 계산</span></div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                        <div><strong>새로운 가치</strong><br><span class="text-zinc-400 text-xs">무료 AI보다 개인화되고 계산된 결과 제공</span></div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                        <div><strong>수익화 중심</strong><br><span class="text-zinc-400 text-xs">가치가 명확할 때만 돈 받음</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Value vs Free AI -->
+        <div class="mb-10">
+            <div class="section-header mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-star"></i>
+                <span>무료 AI와의 차별화 (수익화의 핵심)</span>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="value-card rounded-3xl p-6">
+                    <div class="text-red-400 text-sm mb-2">무료 AI (ChatGPT 등)</div>
+                    <ul class="text-sm text-zinc-400 space-y-1.5">
+                        <li>• 매번 규칙을 다시 설명해야 함</li>
+                        <li>• 칼로리·가격 계산을 매번 물어봐야 함</li>
+                        <li>• 내 과거 식사 기록을 기억하지 못함</li>
+                        <li>• "이번 달 따라가면 어떻게 될까?" 예측 어려움</li>
+                        <li>• 일관성 없음 (기분에 따라 답변 달라짐)</li>
+                    </ul>
+                </div>
+                <div class="value-card rounded-3xl p-6 border border-emerald-800">
+                    <div class="text-emerald-400 text-sm mb-2">Food Rule Guard</div>
+                    <ul class="text-sm text-zinc-300 space-y-1.5">
+                        <li>• 한 번 만든 룰이 영구적으로 적용</li>
+                        <li>• 템플릿 + 음식 DB로 계산 자동화</li>
+                        <li>• 내 결정 로그를 쌓아 개인화된 예측</li>
+                        <li>• "이 규칙 지키면 30일 후 -2.3kg / 87,000원 절감" 즉시 제시</li>
+                        <li>• 내 기준으로 일관되게 판단</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 제품 컨셉 -->
+        <div class="mb-10">
+            <div class="section-header mb-4">제품 컨셉</div>
+            <div class="bg-zinc-900 rounded-3xl p-8">
+                <div class="text-lg font-semibold mb-4">Food Rule Guard = 규칙 엔진 + 템플릿 라이브러리 + 음식 데이터 + 임팩트 계산기</div>
+                
+                <div class="grid md:grid-cols-3 gap-6 text-sm">
+                    <div>
+                        <div class="font-semibold text-orange-400 mb-2">1. 개인 룰 시스템</div>
+                        <div class="text-zinc-400">사용자가 만들거나 템플릿에서 가져온 룰을 영구 저장. 매 입력마다 자동 적용.</div>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-orange-400 mb-2">2. 템플릿 라이브러리</div>
+                        <div class="text-zinc-400">다이어트, 예산 관리, 야식 금지, 건강 중심 등 바로 사용할 수 있는 미리 정의된 룰 세트 + 데이터.</div>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-orange-400 mb-2">3. 데이터 + 계산 레이어</div>
+                        <div class="text-zinc-400">음식 칼로리, 평균 가격, 영양 정보. 결정 시 즉시 칼로리/비용 계산 + 장기 효과 시뮬레이션.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주요 기능 -->
+        <div class="mb-12">
+            <div class="section-header mb-4">주요 기능 (MVP + 확장)</div>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-zinc-900 rounded-3xl p-6">
+                    <div class="font-semibold mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>기본 기능 (무료 티어)</span>
+                    </div>
+                    <ul class="text-sm text-zinc-300 space-y-2">
+                        <li>• 템플릿 선택 (다이어트 / 예산 / 야식금지 등 8~10종)</li>
+                        <li>• 텍스트 입력으로 즉시 판단 (규칙 매칭)</li>
+                        <li>• 기본 칼로리·가격 표시 (시드 데이터)</li>
+                        <li>• 간단 결정 로그 (참음/먹음)</li>
+                        <li>• 내 룰 추가/수정</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-zinc-900 rounded-3xl p-6 border border-emerald-800">
+                    <div class="font-semibold mb-3 flex items-center gap-2 text-emerald-400">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>유료 차별화 기능</span>
+                    </div>
+                    <ul class="text-sm text-zinc-300 space-y-2">
+                        <li>• 상세 음식 데이터베이스 (더 많은 음식 + 영양소)</li>
+                        <li>• 30일 / 90일 임팩트 시뮬레이션 (칼로리 절감 → 체중 변화, 비용 절감)</li>
+                        <li>• 개인 패턴 분석 ("스트레스 받을 때 이 규칙 위반률 64%")</li>
+                        <li>• 고급 룰 (조건 조합, 시간대별, 이전 식사 연동)</li>
+                        <li>• 리포트 내보내기 + 알림</li>
+                        <li>• 클라우드 동기화 (멀티 기기)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 템플릿 예시 -->
+        <div class="mb-12">
+            <div class="section-header mb-4">템플릿 예시 (AI 없이 바로 시작 가능)</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-zinc-900 rounded-2xl p-5">
+                    <div class="font-semibold mb-2">체중 감량 모드</div>
+                    <div class="text-xs text-zinc-400 mb-3">기본 1,800kcal 목표</div>
+                    <ul class="text-xs text-zinc-300 space-y-1">
+                        <li>• 저녁 8시 이후 아무것도 먹지 않는다</li>
+                        <li>• 배달은 주 2회 이하</li>
+                        <li>• 탄수화물 위주 식사 후 디저트 자제</li>
+                    </ul>
+                </div>
+                <div class="bg-zinc-900 rounded-2xl p-5">
+                    <div class="font-semibold mb-2">예산 관리 모드</div>
+                    <div class="text-xs text-zinc-400 mb-3">외식 월 15만 원 이하</div>
+                    <ul class="text-xs text-zinc-300 space-y-1">
+                        <li>• 배달 1회당 15,000원 이상 금지</li>
+                        <li>• 카페 음료는 주 3회 이하</li>
+                        <li>• 장보기 전 리스트 작성 후 구매</li>
+                    </ul>
+                </div>
+                <div class="bg-zinc-900 rounded-2xl p-5">
+                    <div class="font-semibold mb-2">야식 완전 금지</div>
+                    <div class="text-xs text-zinc-400 mb-3">수면 + 다이어트 특화</div>
+                    <ul class="text-xs text-zinc-300 space-y-1">
+                        <li>• 오후 9시 이후 음식 섭취 금지</li>
+                        <li>• 배고픔이 7 이상일 때만 물 먼저 마신다</li>
+                        <li>• 스트레스 시 단 음식 대체 음식 준비</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-xs text-zinc-500 mt-3">→ 사용자는 템플릿을 그대로 쓰거나, 일부만 수정해서 시작할 수 있음 (AI로 처음부터 만드는 피로 감소)</div>
+        </div>
+
+        <!-- 데이터 & 계산 -->
+        <div class="mb-12">
+            <div class="section-header mb-4">데이터 &amp; 계산 레이어 (새로운 가치의 핵심)</div>
+            
+            <div class="bg-zinc-900 rounded-3xl p-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="font-semibold mb-3">포함할 데이터</div>
+                        <ul class="text-sm text-zinc-300 space-y-1.5">
+                            <li>• 한국인 주요 음식 칼로리 (치킨, 피자, 라면, 삼겹살, 김치찌개 등)</li>
+                            <li>• 1인분 기준 평균 가격 (배달앱 평균가 반영)</li>
+                            <li>• 간단 영양 정보 (단백질/탄수/지방 대략)</li>
+                            <li>• 사용자 커스텀 음식 추가 가능</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-3">제공할 계산/예측</div>
+                        <ul class="text-sm text-zinc-300 space-y-1.5">
+                            <li>• 이번 결정 칼로리 + 예상 비용</li>
+                            <li>• "이 규칙을 30일 지키면 예상 절감 칼로리 / 비용 / 체중 변화"</li>
+                            <li>• 실제 로그 vs 목표 비교</li>
+                            <li>• 위반 패턴 분석 (요일, 시간, 감정별)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6 text-xs text-amber-400">
+                    주의: 모든 계산은 "추정치"이며 의학적 조언이 아님. 명확히 고지.
+                </div>
+            </div>
+        </div>
+
+        <!-- 로드맵 -->
+        <div id="roadmap" class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="section-header flex-1">개발 로드맵</div>
+            </div>
+
+            <!-- Phase 0 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-emerald-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="font-bold text-emerald-400">Phase 0</span>
+                        <span class="text-xs bg-emerald-900 text-emerald-400 px-3 py-0.5 rounded-2xl ml-2">완료</span>
+                    </div>
+                </div>
+                <div class="font-semibold mb-1">Food Guard Mini (현재)</div>
+                <div class="text-sm text-zinc-400">순수 클라이언트, 기본 룰 매칭, localStorage, 서버 비용 0원. 개념 검증용.</div>
+            </div>
+
+            <!-- Phase 1 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="font-bold text-blue-400">Phase 1</span>
+                        <span class="text-xs bg-blue-900 text-blue-400 px-3 py-0.5 rounded-2xl ml-2">2~3주</span>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-x-8 text-sm">
+                    <div>
+                        <div class="font-medium mb-2">템플릿 + 데이터 베이스</div>
+                        <ul class="text-zinc-300 space-y-1">
+                            <li>• 8~10개 실용 템플릿 제작</li>
+                            <li>• 150~200개 한국 음식 시드 데이터 (칼로리 + 가격)</li>
+                            <li>• 음식 검색/선택 UI</li>
+                            <li>• 결정 시 칼로리·비용 즉시 표시</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-medium mb-2">기본 계산 엔진</div>
+                        <ul class="text-zinc-300 space-y-1">
+                            <li>• 단순 칼로리 합산</li>
+                            <li>• 월간 비용 추정</li>
+                            <li>• 로그 기반 간단 통계</li>
+                            <li>• 사용자 커스텀 음식 등록</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-indigo-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="font-bold text-indigo-400">Phase 2</span>
+                        <span class="text-xs bg-indigo-900 text-indigo-400 px-3 py-0.5 rounded-2xl ml-2">2~3주</span>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-x-8 text-sm">
+                    <div>
+                        <div class="font-medium mb-2">임팩트 시뮬레이션</div>
+                        <ul class="text-zinc-300 space-y-1">
+                            <li>• 30일 / 90일 예측 (칼로리 절감 → 체중 변화 모델)</li>
+                            <li>• 비용 절감 리포트</li>
+                            <li>• "이대로 가면" vs "규칙 지키면" 비교</li>
+                            <li>• 시각화 (차트)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="font-medium mb-2">개인화 강화</div>
+                        <ul class="text-zinc-300 space-y-1">
+                            <li>• 실제 로그 기반 위반 패턴 분석</li>
+                            <li>• 템플릿 커스터마이징 저장</li>
+                            <li>• 더 정교한 룰 매칭 (조건 추가)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="phase-card bg-zinc-900 rounded-3xl p-6 mb-4 border-l-4 border-violet-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="font-bold text-violet-400">Phase 3</span>
+                        <span class="text-xs bg-violet-900 text-violet-400 px-3 py-0.5 rounded-2xl ml-2">3주</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="font-medium mb-2">스마트 레이어 + 수익화 준비</div>
+                    <div class="grid md:grid-cols-2 gap-x-8 text-sm text-zinc-300">
+                        <ul class="space-y-1">
+                            <li>• 선택적 저비용 AI (규칙 해석 보조, 입력 이해)</li>
+                            <li>• 클라우드 저장 + 동기화 (유료)</li>
+                            <li>• 고급 인사이트 (개인 트렌드)</li>
+                        </ul>
+                        <ul class="space-y-1">
+                            <li>• Freemium 모델 적용</li>
+                            <li>• 리포트 내보내기 / 알림</li>
+                            <li>• 실제 유료 전환 테스트</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 수익화 -->
+        <div id="monetization" class="mb-12">
+            <div class="section-header mb-4">수익화 모델</div>
+            
+            <div class="bg-zinc-900 rounded-3xl p-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="font-semibold mb-3">가격 구조 (제안)</div>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center bg-zinc-950 px-4 py-3 rounded-2xl">
+                                <div>무료</div>
+                                <div class="text-zinc-400">기본 템플릿 + 제한된 데이터 + 월 50회 판단</div>
+                            </div>
+                            <div class="flex justify-between items-center bg-emerald-950 border border-emerald-800 px-4 py-3 rounded-2xl">
+                                <div class="font-medium">유료 (월 4,900원)</div>
+                                <div class="text-emerald-400">전체 데이터 + 임팩트 예측 + 무제한 로그 + 고급 분석</div>
+                            </div>
+                            <div class="flex justify-between items-center bg-zinc-950 px-4 py-3 rounded-2xl">
+                                <div>연간</div>
+                                <div class="text-zinc-400">2개월 무료 (월 약 4,000원)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-semibold mb-3">사용자가 돈 낼 이유</div>
+                        <div class="space-y-2 text-sm">
+                            <div>• "이 규칙대로 가면 실제로 얼마 아끼고 얼마나 빠질까"를 숫자로 바로 보고 싶어서</div>
+                            <div>• 매번 AI한테 설명하는 피로를 없애고 싶어서</div>
+                            <div>• 내 실제 데이터로 맞춤 예측을 보고 싶어서</div>
+                            <div>• 템플릿으로 시작해서 꾸준히 관리하고 싶어서</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 기술 & 비용 -->
+        <div class="mb-12">
+            <div class="section-header mb-4">기술 스택 &amp; 비용 관리</div>
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div class="bg-zinc-900 rounded-3xl p-6">
+                    <div class="font-semibold mb-3">초기 (Phase 0~1)</div>
+                    <div class="text-zinc-400">순수 HTML/JS + Tailwind + localStorage + Vercel 정적 배포<br>
+                    → 서버 비용 거의 0원</div>
+                </div>
+                <div class="bg-zinc-900 rounded-3xl p-6">
+                    <div class="font-semibold mb-3">Phase 2 이후</div>
+                    <div class="text-zinc-400">Vercel Functions (선택적) + 저비용 LLM (Gemini Flash 등) + 간단 DB<br>
+                    → AI 호출은 유료 사용자 위주 + 캐싱으로 비용 통제</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 위험 -->
+        <div class="mb-12">
+            <div class="section-header mb-4">주요 위험 및 대처</div>
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                <div class="bg-zinc-900 p-6 rounded-3xl">
+                    <div class="font-semibold text-red-400 mb-1">데이터 정확도</div>
+                    <div class="text-zinc-400">칼로리·가격이 실제와 다를 수 있음</div>
+                    <div class="text-emerald-400 text-xs mt-2">→ "추정치" 명확 고지 + 사용자 수정 기능 필수</div>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-3xl">
+                    <div class="font-semibold text-red-400 mb-1">의학적 조언 오해</div>
+                    <div class="text-zinc-400">체중 변화 예측이 의학 조언으로 보일 위험</div>
+                    <div class="text-emerald-400 text-xs mt-2">→ 강한 disclaimer + "참고용" 강조</div>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-3xl">
+                    <div class="font-semibold text-red-400 mb-1">초기 데이터 구축 비용</div>
+                    <div class="text-zinc-400">음식 데이터 직접 넣는 수고</div>
+                    <div class="text-emerald-400 text-xs mt-2">→ Phase 1은 150개 정도로 제한 + 사용자 추가 유도</div>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-3xl">
+                    <div class="font-semibold text-red-400 mb-1">사용자 유지</div>
+                    <div class="text-zinc-400">다이어트 앱은 이탈률 높음</div>
+                    <div class="text-emerald-400 text-xs mt-2">→ "규칙 위반 즉시 피드백" + 작은 승리 표시로 루프 만들기</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-xs text-zinc-500 mt-10">
+            cowcom.my • 수익화가 가능한 선에서 실질적 가치를 주는 방향으로 설계<br>
+            AI가 대신해주는 게 아니라, 사용자가 만든 규칙과 데이터를 더 강력하게 활용하게 해주는 제품
+        </div>
+    </div>
+</body>
+</html>
