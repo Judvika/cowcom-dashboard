@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Guard Mini • 내 식사 룰 가드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .rule-card {
+            transition: all 0.1s ease;
+        }
+        .result-card {
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .log-item {
+            transition: background-color 0.1s;
+        }
+        .log-item:hover {
+            background-color: #27272a;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <div class="max-w-2xl mx-auto p-4 md:p-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-orange-500 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-utensils text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold tracking-tight">Food Guard Mini</div>
+                        <div class="text-xs text-zinc-500 -mt-1">내가 만든 식사 룰로 즉시 판단</div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="text-[10px] px-3 py-1 bg-zinc-900 rounded-full text-emerald-400 font-medium inline-flex items-center gap-1">
+                    <i class="fa-solid fa-check text-xs"></i>
+                    <span>서버 비용 0원</span>
+                </div>
+                <div class="text-[10px] text-zinc-500 mt-0.5">모든 데이터는 이 브라우저에만 저장</div>
+            </div>
+        </div>
+
+        <!-- Quick Info -->
+        <div class="mb-6 text-xs bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-zinc-400">
+            <strong class="text-zinc-300">음식 결정 전용 가벼운 도구</strong><br>
+            • “지금 치킨 시킬까?”처럼 한 줄만 입력하면 됩니다 (사진 없음)<br>
+            • 처음에는 실용적인 예시 룰이 들어가 있어요. 바로 수정·추가하세요.<br>
+            • 판단은 100% 브라우저 안에서만 일어납니다.
+        </div>
+
+        <!-- Main Guard -->
+        <div class="bg-zinc-900 rounded-3xl p-6 mb-6">
+            <div class="mb-4">
+                <div class="text-sm font-semibold mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-question-circle text-orange-400"></i>
+                    <span>지금 어떤 결정을 하려고 하나요?</span>
+                </div>
+                <div class="flex gap-2">
+                    <input id="decision-input" 
+                           type="text" 
+                           class="flex-1 bg-zinc-950 border border-zinc-800 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-zinc-600"
+                           placeholder="예: 치킨 시킬까? / 지금 라면 먹을까? / 야식 먹고 싶은데..."
+                           onkeydown="if (event.key === 'Enter') runGuard()">
+                    <button onclick="runGuard()" 
+                            class="px-6 py-3 bg-white hover:bg-zinc-200 active:bg-zinc-300 text-black font-semibold rounded-2xl text-sm transition">
+                        가드 실행
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div id="result-area" class="hidden mt-4">
+                <div class="text-xs uppercase tracking-widest text-zinc-500 mb-2">판단 결과</div>
+                
+                <div id="verdict-box" 
+                     class="result-card mb-4 px-5 py-4 rounded-2xl text-base font-medium border">
+                </div>
+
+                <div class="mb-4">
+                    <div class="text-xs text-zinc-500 mb-1.5">적용된 내 룰</div>
+                    <div id="matched-rules" class="space-y-1.5 text-sm"></div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveDecision('skipped')" 
+                            class="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm py-2.5 rounded-2xl font-medium transition">
+                        참음 (스킵)
+                    </button>
+                    <button onclick="saveDecision('later')" 
+                            class="flex-1 bg-zinc-700 hover:bg-zinc-600 text-sm py-2.5 rounded-2xl font-medium transition">
+                        나중에 다시
+                    </button>
+                    <button onclick="saveDecision('done')" 
+                            class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm py-2.5 rounded-2xl font-medium transition">
+                        먹음
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Rules -->
+        <div class="bg-zinc-900 rounded-3xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <div class="font-semibold text-sm">내 식사 룰 <span id="rule-count" class="text-zinc-500 font-normal text-xs"></span></div>
+                <button onclick="showAddRuleModal()" 
+                        class="text-xs px-3 py-1.5 bg-white text-black rounded-xl font-medium hover:bg-zinc-200 transition flex items-center gap-1">
+                    <i class="fa-solid fa-plus text-xs"></i>
+                    <span>룰 추가</span>
+                </button>
+            </div>
+
+            <div id="rules-list" class="space-y-2 text-sm"></div>
+            
+            <div class="mt-3 text-[10px] text-zinc-500">
+                예시: “저녁 8시 이후에는 아무것도 먹지 않는다” 처럼 구체적으로 적을수록 더 잘 걸러줍니다.
+            </div>
+        </div>
+
+        <!-- Recent Logs -->
+        <div class="bg-zinc-900 rounded-3xl p-6">
+            <div class="flex items-center justify-between mb-3">
+                <div class="font-semibold text-sm">최근 판단 기록</div>
+                <button onclick="clearLogs()" 
+                        class="text-xs text-red-400 hover:text-red-500 px-2 py-1">전체 지우기</button>
+            </div>
+            <div id="logs-list" class="space-y-2 text-sm max-h-64 overflow-auto"></div>
+            <div id="no-logs" class="text-xs text-zinc-500 py-2">아직 기록이 없습니다. 첫 판단을 해보세요.</div>
+        </div>
+
+        <div class="mt-8 text-center text-[10px] text-zinc-500">
+            이 페이지는 완전 클라이언트 전용입니다. <br>
+            Vercel 무료 플랜으로도 충분히 운영 가능 • 데이터는 절대 서버에 올라가지 않음
+        </div>
+    </div>
+
+    <!-- Add Rule Modal -->
+    <div id="modal" class="hidden fixed inset-0 bg-black/70 flex items-end md:items-center justify-center z-50">
+        <div class="bg-zinc-900 w-full md:w-[420px] md:rounded-3xl rounded-t-3xl p-6">
+            <div class="flex justify-between items-center mb-4">
+                <div class="font-semibold">새 식사 룰 추가</div>
+                <button onclick="hideModal()" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">룰 내용</label>
+                    <input id="new-rule-text" type="text" 
+                           class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl px-4 py-3 text-sm"
+                           placeholder="예: 저녁 8시 이후에는 아무것도 먹지 않는다">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">카테고리 (선택)</label>
+                    <select id="new-rule-category" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl px-4 py-3 text-sm">
+                        <option value="">일반</option>
+                        <option value="배달/외식">배달/외식</option>
+                        <option value="야식/간식">야식/간식</option>
+                        <option value="식사 구성">식사 구성</option>
+                        <option value="감정/스트레스">감정/스트레스</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-2 mt-6">
+                <button onclick="hideModal()" 
+                        class="flex-1 py-3 text-sm rounded-2xl border border-zinc-700 hover:bg-zinc-800">취소</button>
+                <button onclick="addNewRule()" 
+                        class="flex-1 py-3 text-sm bg-white text-black font-medium rounded-2xl">룰 추가</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind config
+        function initTailwind() {
+            document.documentElement.style.setProperty('--accent', '#f97316');
+        }
+
+        // Data management (localStorage only)
+        let rules = [];
+        let logs = [];
+
+        function loadData() {
+            const savedRules = localStorage.getItem('foodGuardMini_rules');
+            const savedLogs = localStorage.getItem('foodGuardMini_logs');
+
+            if (savedRules) {
+                rules = JSON.parse(savedRules);
+            } else {
+                // Seed with useful food-specific default rules
+                rules = [
+                    { id: 1, text: "저녁 8시 이후에는 아무것도 먹지 않는다", category: "야식/간식" },
+                    { id: 2, text: "배달 음식은 하루에 한 번 이상 하지 않는다", category: "배달/외식" },
+                    { id: 3, text: "배고프지 않은데 먹고 싶으면 10분 기다려본다", category: "감정/스트레스" },
+                    { id: 4, text: "스트레스 받을 때 단 음식이나 야식은 먹지 않는다", category: "감정/스트레스" },
+                    { id: 5, text: "탄수화물 위주로 먹은 후에는 디저트 자제", category: "식사 구성" },
+                    { id: 6, text: "운동한 날이 아니면 야식은 삼간다", category: "야식/간식" }
+                ];
+                saveRules();
+            }
+
+            if (savedLogs) {
+                logs = JSON.parse(savedLogs);
+            }
+        }
+
+        function saveRules() {
+            localStorage.setItem('foodGuardMini_rules', JSON.stringify(rules));
+        }
+
+        function saveLogs() {
+            localStorage.setItem('foodGuardMini_logs', JSON.stringify(logs));
+        }
+
+        // Render rules list
+        function renderRules() {
+            const container = document.getElementById('rules-list');
+            const countEl = document.getElementById('rule-count');
+            
+            countEl.textContent = `(${rules.length})`;
+            container.innerHTML = '';
+
+            if (rules.length === 0) {
+                container.innerHTML = `<div class="text-xs text-zinc-500 py-2">아직 등록된 룰이 없습니다.</div>`;
+                return;
+            }
+
+            rules.forEach((rule, index) => {
+                const div = document.createElement('div');
+                div.className = `rule-card flex items-start justify-between gap-3 bg-zinc-950 border border-zinc-800 px-4 py-3 rounded-2xl text-sm`;
+                
+                div.innerHTML = `
+                    <div class="flex-1 min-w-0">
+                        <div class="text-zinc-200">${rule.text}</div>
+                        ${rule.category ? `<div class="text-[10px] text-orange-400/70 mt-0.5">${rule.category}</div>` : ''}
+                    </div>
+                    <button onclick="deleteRule(${index})" 
+                            class="text-red-400 hover:text-red-500 text-xs px-2 py-1 flex-shrink-0">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addNewRule() {
+            const text = document.getElementById('new-rule-text').value.trim();
+            const category = document.getElementById('new-rule-category').value;
+
+            if (!text) {
+                alert('룰 내용을 입력해주세요.');
+                return;
+            }
+
+            rules.push({
+                id: Date.now(),
+                text: text,
+                category: category || ''
+            });
+
+            saveRules();
+            renderRules();
+            hideModal();
+
+            // Clear input
+            document.getElementById('new-rule-text').value = '';
+        }
+
+        function deleteRule(index) {
+            if (!confirm('이 룰을 삭제할까요?')) return;
+            rules.splice(index, 1);
+            saveRules();
+            renderRules();
+        }
+
+        function showAddRuleModal() {
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal').classList.add('flex');
+            setTimeout(() => {
+                document.getElementById('new-rule-text').focus();
+            }, 50);
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        // Simple rule matching engine (no AI, pure client-side) — tuned for food
+        function matchRules(input) {
+            const lowerInput = input.toLowerCase();
+            const matched = [];
+
+            rules.forEach(rule => {
+                const lowerRule = rule.text.toLowerCase();
+                
+                let score = 0;
+                
+                // Direct keyword overlap
+                const inputWords = lowerInput.split(/\s+/).filter(w => w.length > 1);
+                const ruleWords = lowerRule.split(/\s+/).filter(w => w.length > 1);
+                
+                inputWords.forEach(word => {
+                    if (ruleWords.some(rw => rw.includes(word) || word.includes(rw))) {
+                        score += 2;
+                    }
+                });
+
+                // Food-specific category hints
+                if (rule.category) {
+                    const cat = rule.category.toLowerCase();
+                    const foodKeywords = ['치킨', '피자', '배달', '야식', '디저트', '라면', '과자', '아이스크림', '빵', '케이크', '초코', '맥주', '술', '간식'];
+                    
+                    if (foodKeywords.some(kw => lowerInput.includes(kw))) {
+                        if (cat.includes('배달') || cat.includes('야식') || cat.includes('간식')) {
+                            score += 4;
+                        }
+                    }
+                    
+                    if (lowerInput.includes('스트레스') || lowerInput.includes('짜증') || lowerInput.includes('피곤')) {
+                        if (cat.includes('감정') || cat.includes('스트레스')) score += 3;
+                    }
+                }
+
+                // Strong match if rule text appears in input or vice versa
+                if (lowerInput.includes(lowerRule.substring(0, 12)) || lowerRule.includes(lowerInput.substring(0, 10))) {
+                    score += 4;
+                }
+
+                if (score >= 2) {
+                    matched.push({
+                        rule: rule,
+                        score: score
+                    });
+                }
+            });
+
+            // Sort by score
+            matched.sort((a, b) => b.score - a.score);
+            return matched.slice(0, 4); // top 4
+        }
+
+        // Generate verdict — food decision tone
+        function generateVerdict(matched, input) {
+            if (matched.length === 0) {
+                return {
+                    text: "지금 당장 큰 문제가 없어 보입니다.",
+                    color: "bg-emerald-900/40 border-emerald-800 text-emerald-300",
+                    recommendation: "먹어도 될 듯"
+                };
+            }
+
+            const topScore = matched[0].score;
+            let recommendation = "조금 신중하게";
+            let color = "bg-yellow-900/40 border-yellow-800 text-yellow-300";
+
+            if (topScore >= 6) {
+                recommendation = "룰에 걸림 — 참는 게 좋을 수 있음";
+                color = "bg-red-900/40 border-red-800 text-red-300";
+            } else if (topScore >= 4) {
+                recommendation = "신중하게 생각하세요";
+                color = "bg-yellow-900/40 border-yellow-800 text-yellow-300";
+            }
+
+            return {
+                text: `${matched.length}개의 내 식사 룰이 관련 있어요.`,
+                color: color,
+                recommendation: recommendation
+            };
+        }
+
+        function runGuard() {
+            const input = document.getElementById('decision-input').value.trim();
+            if (!input) {
+                alert('결정 내용을 입력해주세요.');
+                return;
+            }
+
+            const matched = matchRules(input);
+            const verdict = generateVerdict(matched, input);
+
+            // Show result
+            const resultArea = document.getElementById('result-area');
+            const verdictBox = document.getElementById('verdict-box');
+            const matchedContainer = document.getElementById('matched-rules');
+
+            verdictBox.className = `result-card mb-4 px-5 py-4 rounded-2xl text-base font-medium border ${verdict.color}`;
+            verdictBox.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-sm opacity-75">${verdict.text}</div>
+                        <div class="text-xl font-semibold mt-1">${verdict.recommendation}</div>
+                    </div>
+                    <i class="fa-solid fa-utensils text-3xl opacity-40"></i>
+                </div>
+            `;
+
+            matchedContainer.innerHTML = '';
+            if (matched.length > 0) {
+                matched.forEach(m => {
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center gap-2 bg-zinc-950 border border-zinc-800 px-3 py-2 rounded-xl text-xs';
+                    div.innerHTML = `
+                        <span class="flex-1">${m.rule.text}</span>
+                    `;
+                    matchedContainer.appendChild(div);
+                });
+            } else {
+                const div = document.createElement('div');
+                div.className = 'text-xs text-zinc-500 px-2';
+                div.textContent = '매칭되는 내 룰이 없습니다. (새로운 상황일 수 있어요)';
+                matchedContainer.appendChild(div);
+            }
+
+            resultArea.classList.remove('hidden');
+            resultArea.dataset.currentInput = input;
+            resultArea.dataset.matchedCount = matched.length;
+        }
+
+        function saveDecision(action) {
+            const resultArea = document.getElementById('result-area');
+            const input = resultArea.dataset.currentInput || document.getElementById('decision-input').value;
+            const matchedCount = parseInt(resultArea.dataset.matchedCount || 0);
+
+            const log = {
+                id: Date.now(),
+                input: input,
+                action: action,
+                matchedCount: matchedCount,
+                date: new Date().toISOString()
+            };
+
+            logs.unshift(log);
+            if (logs.length > 30) logs = logs.slice(0, 30);
+
+            saveLogs();
+            renderLogs();
+
+            // Hide result and clear input
+            resultArea.classList.add('hidden');
+            document.getElementById('decision-input').value = '';
+
+            // Small feedback
+            const msg = action === 'skipped' ? '참음으로 기록했어요.' : 
+                       action === 'later' ? '나중에 다시 보기로 기록했어요.' : '먹음으로 기록했어요.';
+            
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 left-1/2 -translate-x/2 bg-zinc-800 text-xs px-4 py-2 rounded-2xl';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1600);
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('logs-list');
+            const noLogs = document.getElementById('no-logs');
+            
+            container.innerHTML = '';
+
+            if (logs.length === 0) {
+                noLogs.style.display = 'block';
+                return;
+            }
+            noLogs.style.display = 'none';
+
+            logs.slice(0, 8).forEach(log => {
+                const div = document.createElement('div');
+                div.className = `log-item flex justify-between gap-3 bg-zinc-950 border border-zinc-800 px-3 py-2.5 rounded-2xl text-xs`;
+                
+                const actionLabel = log.action === 'skipped' ? '참음' : 
+                                   log.action === 'later' ? '나중' : '먹음';
+                const actionColor = log.action === 'skipped' ? 'text-red-400' : 
+                                   log.action === 'later' ? 'text-zinc-400' : 'text-emerald-400';
+
+                const shortDate = new Date(log.date).toLocaleDateString('ko-KR', {month:'numeric', day:'numeric'});
+                
+                div.innerHTML = `
+                    <div class="flex-1 min-w-0">
+                        <div class="truncate text-zinc-200">${log.input}</div>
+                        <div class="text-[10px] text-zinc-500 mt-0.5">${shortDate} • ${log.matchedCount}개 룰 매칭</div>
+                    </div>
+                    <div class="${actionColor} font-medium text-right flex-shrink-0">${actionLabel}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function clearLogs() {
+            if (!confirm('모든 판단 기록을 지울까요?')) return;
+            logs = [];
+            saveLogs();
+            renderLogs();
+        }
+
+        // Keyboard support
+        function setupKeyboard() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                    e.preventDefault();
+                    document.getElementById('decision-input').focus();
+                }
+            });
+
+            // Close modal on escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('modal');
+                    if (!modal.classList.contains('hidden')) {
+                        hideModal();
+                    }
+                }
+            });
+        }
+
+        // Initialize everything
+        function init() {
+            initTailwind();
+            loadData();
+            renderRules();
+            renderLogs();
+            setupKeyboard();
+
+            // Nice first-use hint for food context
+            const input = document.getElementById('decision-input');
+            if (rules.length > 0 && logs.length === 0) {
+                input.placeholder = "예: 치킨 시킬까?";
+            }
+
+            // Make sure result is hidden on load
+            document.getElementById('result-area').classList.add('hidden');
+        }
+
+        // Boot
+        window.onload = init;
+
+        // Expose for debugging if needed
+        window.FoodGuardMini = { loadData, renderRules };
+    </script>
+</body>
+</html>
