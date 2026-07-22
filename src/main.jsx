@@ -104,7 +104,7 @@ function App() {
         </div>
       </section>
 
-      {/* NEW: AI Prototypes section */}
+      {/* Prototypes hub — one page for all experiments */}
       <section className="panel">
         <div className="section-title">
           <Beaker />
@@ -117,18 +117,26 @@ function App() {
           <article 
             className="project-card" 
             style={{ cursor: 'pointer' }}
-            onClick={openPrototype}
+            onClick={() => window.open('/prototypes.html', '_blank')}
           >
             <div>
-              <span>AI</span>
-              <h3>오늘의 순간 v2</h3>
+              <span>지도</span>
+              <h3>주변 활동 지도 (Nearby Pin)</h3>
             </div>
             <p className="status">Interactive</p>
-            <p className="next">활동 종료 후 generative visual + adaptive sound. 새 탭에서 열림.</p>
+            <p className="next">지금 하고 있는 일만 지도에 핀. 종료되면 사라짐. 공공 공간 중심.</p>
           </article>
         </div>
-        <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '8px' }}>
-          (로컬에서 볼 때 demos/ai-moment.html 파일이 함께 있어야 합니다)
+        
+        <div style={{ marginTop: '10px', fontSize: '0.8rem' }}>
+          <a href="/demos/ai-moment.html" target="_blank" 
+             style={{ color: '#64748b', textDecoration: 'underline' }}>
+            + 오늘의 순간 (AI Moment) 별도 페이지
+          </a>
+        </div>
+        
+        <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '8px' }}>
+          전체 실험은 <a href="/prototypes.html" target="_blank" style={{color:'#bae6fd'}}>cowcom.my/prototypes.html</a> 에서 한 번에 볼 수 있어요.
         </p>
       </section>
 
