@@ -3,7 +3,7 @@ export const company = {
   domain: 'cowcom.my',
   mission: 'AI와 사람이 함께 실제 수익을 만드는 작은 회사를 운영한다.',
   status: 'Dashboard v0 준비 중',
-  updatedAt: '2026-07-01',
+  updatedAt: '2026-07-23',
 };
 
 export const goals = [
