@@ -3,22 +3,17 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/universe", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe" },
-    { "source": "/universe/assets/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/assets/:path*" },
-    { "source": "/universe/planet-assets/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/planet-assets/:path*" },
-    { "source": "/universe/planet-archetypes/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/planet-archetypes/:path*" },
-    { "source": "/universe/spacecraft/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/spacecraft/:path*" },
-    { "source": "/universe/universe/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/:path*" },
-    { "source": "/universe/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/:path*" },
-    { "source": "/discovery", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/discovery" },
-    { "source": "/about", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/about" },
-    { "source": "/account", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/account" },
-    { "source": "/contact", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/contact" },
-    { "source": "/privacy", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/privacy" },
-    { "source": "/terms", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/terms" },
-    { "source": "/signal/today", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/signal/today" },
-    { "source": "/my-homeworld/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/my-homeworld/:path*" },
-    { "source": "/citizenship/apply", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/citizenship/apply" },
-    { "source": "/citizens/:path*", "destination": "https://find-my-star.cowcom-universe.workers.dev/universe/citizens/:path*" }
+    {
+      "source": "/universe/",
+      "destination": "https://cowcom-universe.vercel.app/universe"
+    },
+    {
+      "source": "/universe",
+      "destination": "https://cowcom-universe.vercel.app/universe"
+    },
+    {
+      "source": "/universe/:path*",
+      "destination": "https://cowcom-universe.vercel.app/universe/:path*"
+    }
   ]
 }
